@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Teste_OnibusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BUSES">
+          <Key>
+            <PropertyRef Name="Bus_ID" />
+          </Key>
+          <Property Name="Bus_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bus_Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Bus_Provider" Type="varchar" MaxLength="50" />
+          <Property Name="Bus_Color" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="LANDMARK_KNOWN_AS">
+          <Key>
+            <PropertyRef Name="Known_As_ID" />
+          </Key>
+          <Property Name="Known_As_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Known_As_Description" Type="varchar" MaxLength="60" />
+          <Property Name="Landmark_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LANDMARKs">
+          <Key>
+            <PropertyRef Name="Landmark_ID" />
+          </Key>
+          <Property Name="Landmark_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Landmark_Coordinates" Type="geography" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROUTEs">
+          <Key>
+            <PropertyRef Name="Route_ID" />
+          </Key>
+          <Property Name="Route_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bus_ID" Type="int" />
+          <Property Name="Route_Coordinates" Type="geography" />
+        </EntityType>
+        <EntityType Name="STATION_BUSES">
+          <Key>
+            <PropertyRef Name="Station_Buses_ID" />
+          </Key>
+          <Property Name="Station_Buses_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Buses_FK" Type="int" Nullable="false" />
+          <Property Name="Stations_Fk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STATIONS">
+          <Key>
+            <PropertyRef Name="Station_ID" />
+          </Key>
+          <Property Name="Station_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Station_Description" Type="varchar" MaxLength="50" />
+          <Property Name="Station_Coordinates" Type="geography" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LANDMARK_KNOWN_AS_LANDMARKs">
+          <End Role="LANDMARKs" Type="Self.LANDMARKs" Multiplicity="1" />
+          <End Role="LANDMARK_KNOWN_AS" Type="Self.LANDMARK_KNOWN_AS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LANDMARKs">
+              <PropertyRef Name="Landmark_ID" />
+            </Principal>
+            <Dependent Role="LANDMARK_KNOWN_AS">
+              <PropertyRef Name="Landmark_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Route_Bus">
+          <End Role="BUSES" Type="Self.BUSES" Multiplicity="0..1" />
+          <End Role="ROUTEs" Type="Self.ROUTEs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUSES">
+              <PropertyRef Name="Bus_ID" />
+            </Principal>
+            <Dependent Role="ROUTEs">
+              <PropertyRef Name="Bus_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STATION_BUSES_BUSES1">
+          <End Role="BUSES" Type="Self.BUSES" Multiplicity="1" />
+          <End Role="STATION_BUSES" Type="Self.STATION_BUSES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUSES">
+              <PropertyRef Name="Bus_ID" />
+            </Principal>
+            <Dependent Role="STATION_BUSES">
+              <PropertyRef Name="Buses_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STATION_BUSES_STATIONS">
+          <End Role="STATIONS" Type="Self.STATIONS" Multiplicity="1" />
+          <End Role="STATION_BUSES" Type="Self.STATION_BUSES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATIONS">
+              <PropertyRef Name="Station_ID" />
+            </Principal>
+            <Dependent Role="STATION_BUSES">
+              <PropertyRef Name="Stations_Fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Teste_OnibusModelStoreContainer">
+          <EntitySet Name="BUSES" EntityType="Self.BUSES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LANDMARK_KNOWN_AS" EntityType="Self.LANDMARK_KNOWN_AS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LANDMARKs" EntityType="Self.LANDMARKs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROUTEs" EntityType="Self.ROUTEs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STATION_BUSES" EntityType="Self.STATION_BUSES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STATIONS" EntityType="Self.STATIONS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LANDMARK_KNOWN_AS_LANDMARKs" Association="Self.FK_LANDMARK_KNOWN_AS_LANDMARKs">
+            <End Role="LANDMARKs" EntitySet="LANDMARKs" />
+            <End Role="LANDMARK_KNOWN_AS" EntitySet="LANDMARK_KNOWN_AS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Route_Bus" Association="Self.FK_Route_Bus">
+            <End Role="BUSES" EntitySet="BUSES" />
+            <End Role="ROUTEs" EntitySet="ROUTEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STATION_BUSES_BUSES1" Association="Self.FK_STATION_BUSES_BUSES1">
+            <End Role="BUSES" EntitySet="BUSES" />
+            <End Role="STATION_BUSES" EntitySet="STATION_BUSES" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STATION_BUSES_STATIONS" Association="Self.FK_STATION_BUSES_STATIONS">
+            <End Role="STATIONS" EntitySet="STATIONS" />
+            <End Role="STATION_BUSES" EntitySet="STATION_BUSES" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Teste_OnibusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Teste_OnibusContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LANDMARK_KNOWN_AS" EntityType="Teste_OnibusModel.LANDMARK_KNOWN_AS" />
+          <EntitySet Name="STATION_BUSES" EntityType="Teste_OnibusModel.STATION_BUSES" />
+          <EntitySet Name="ROUTEs" EntityType="Teste_OnibusModel.ROUTE" />
+          <EntitySet Name="BUS" EntityType="Teste_OnibusModel.BUS" />
+          <AssociationSet Name="FK_Route_Bus" Association="Teste_OnibusModel.FK_Route_Bus">
+            <End Role="Bus" EntitySet="BUS" />
+            <End Role="ROUTE" EntitySet="ROUTEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STATION_BUSES_BUSES1" Association="Teste_OnibusModel.FK_STATION_BUSES_BUSES1">
+            <End Role="Bus" EntitySet="BUS" />
+            <End Role="STATION_BUSES" EntitySet="STATION_BUSES" />
+          </AssociationSet>
+          <EntitySet Name="STATIONS" EntityType="Teste_OnibusModel.STATION" />
+          <AssociationSet Name="FK_STATION_BUSES_STATIONS" Association="Teste_OnibusModel.FK_STATION_BUSES_STATIONS">
+            <End Role="STATION" EntitySet="STATIONS" />
+            <End Role="STATION_BUSES" EntitySet="STATION_BUSES" />
+          </AssociationSet>
+          <EntitySet Name="LANDMARKs" EntityType="Teste_OnibusModel.LANDMARK" />
+          <AssociationSet Name="FK_LANDMARK_KNOWN_AS_LANDMARKs" Association="Teste_OnibusModel.FK_LANDMARK_KNOWN_AS_LANDMARKs">
+            <End Role="LANDMARK" EntitySet="LANDMARKs" />
+            <End Role="LANDMARK_KNOWN_AS" EntitySet="LANDMARK_KNOWN_AS" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="LANDMARK_KNOWN_AS">
+          <Key>
+            <PropertyRef Name="Known_As_ID" />
+          </Key>
+          <Property Name="Known_As_ID" Type="Int32" Nullable="false" />
+          <Property Name="Known_As_Description" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Landmark_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LANDMARK" Relationship="Teste_OnibusModel.FK_LANDMARK_KNOWN_AS_LANDMARKs" FromRole="LANDMARK_KNOWN_AS" ToRole="LANDMARK" />
+        </EntityType>
+        <EntityType Name="STATION_BUSES">
+          <Key>
+            <PropertyRef Name="Station_Buses_ID" />
+          </Key>
+          <Property Name="Station_Buses_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Buses_FK" Type="Int32" Nullable="false" />
+          <Property Name="Stations_Fk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BUS" Relationship="Teste_OnibusModel.FK_STATION_BUSES_BUSES1" FromRole="STATION_BUSES" ToRole="Bus" />
+          <NavigationProperty Name="STATION" Relationship="Teste_OnibusModel.FK_STATION_BUSES_STATIONS" FromRole="STATION_BUSES" ToRole="STATION" />
+        </EntityType>
+        <EntityType Name="ROUTE">
+          <Key>
+            <PropertyRef Name="Route_ID" />
+          </Key>
+          <Property Name="Route_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bus_ID" Type="Int32" />
+          <Property Name="Route_Coordinates" Type="Geography" />
+          <NavigationProperty Name="BUS" Relationship="Teste_OnibusModel.FK_Route_Bus" FromRole="ROUTE" ToRole="Bus" />
+        </EntityType>
+        <EntityType Name="BUS">
+          <Key>
+            <PropertyRef Name="Bus_ID" />
+          </Key>
+          <Property Name="Bus_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bus_Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Bus_Provider" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Bus_Color" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ROUTEs" Relationship="Teste_OnibusModel.FK_Route_Bus" FromRole="Bus" ToRole="ROUTE" />
+          <NavigationProperty Name="STATION_BUSES" Relationship="Teste_OnibusModel.FK_STATION_BUSES_BUSES1" FromRole="Bus" ToRole="STATION_BUSES" />
+        </EntityType>
+        <Association Name="FK_Route_Bus">
+          <End Type="Teste_OnibusModel.BUS" Role="Bus" Multiplicity="0..1" />
+          <End Type="Teste_OnibusModel.ROUTE" Role="ROUTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bus">
+              <PropertyRef Name="Bus_ID" />
+            </Principal>
+            <Dependent Role="ROUTE">
+              <PropertyRef Name="Bus_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STATION_BUSES_BUSES1">
+          <End Type="Teste_OnibusModel.BUS" Role="Bus" Multiplicity="1" />
+          <End Type="Teste_OnibusModel.STATION_BUSES" Role="STATION_BUSES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bus">
+              <PropertyRef Name="Bus_ID" />
+            </Principal>
+            <Dependent Role="STATION_BUSES">
+              <PropertyRef Name="Buses_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="STATION">
+          <Key>
+            <PropertyRef Name="Station_ID" />
+          </Key>
+          <Property Name="Station_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Station_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Station_Coordinates" Type="Geography" Nullable="false" />
+          <NavigationProperty Name="STATION_BUSES" Relationship="Teste_OnibusModel.FK_STATION_BUSES_STATIONS" FromRole="STATION" ToRole="STATION_BUSES" />
+        </EntityType>
+        <Association Name="FK_STATION_BUSES_STATIONS">
+          <End Type="Teste_OnibusModel.STATION" Role="STATION" Multiplicity="1" />
+          <End Type="Teste_OnibusModel.STATION_BUSES" Role="STATION_BUSES" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATION">
+              <PropertyRef Name="Station_ID" />
+            </Principal>
+            <Dependent Role="STATION_BUSES">
+              <PropertyRef Name="Stations_Fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LANDMARK">
+          <Key>
+            <PropertyRef Name="Landmark_ID" />
+          </Key>
+          <Property Name="Landmark_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Landmark_Coordinates" Type="Geography" Nullable="false" />
+          <NavigationProperty Name="LANDMARK_KNOWN_AS" Relationship="Teste_OnibusModel.FK_LANDMARK_KNOWN_AS_LANDMARKs" FromRole="LANDMARK" ToRole="LANDMARK_KNOWN_AS" />
+        </EntityType>
+        <Association Name="FK_LANDMARK_KNOWN_AS_LANDMARKs">
+          <End Type="Teste_OnibusModel.LANDMARK" Role="LANDMARK" Multiplicity="1" />
+          <End Type="Teste_OnibusModel.LANDMARK_KNOWN_AS" Role="LANDMARK_KNOWN_AS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LANDMARK">
+              <PropertyRef Name="Landmark_ID" />
+            </Principal>
+            <Dependent Role="LANDMARK_KNOWN_AS">
+              <PropertyRef Name="Landmark_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Teste_OnibusModelStoreContainer" CdmEntityContainer="Teste_OnibusContext">
+          <EntitySetMapping Name="LANDMARK_KNOWN_AS">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.LANDMARK_KNOWN_AS">
+              <MappingFragment StoreEntitySet="LANDMARK_KNOWN_AS">
+                <ScalarProperty Name="Landmark_FK" ColumnName="Landmark_FK" />
+                <ScalarProperty Name="Known_As_Description" ColumnName="Known_As_Description" />
+                <ScalarProperty Name="Known_As_ID" ColumnName="Known_As_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STATION_BUSES">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.STATION_BUSES">
+              <MappingFragment StoreEntitySet="STATION_BUSES">
+                <ScalarProperty Name="Stations_Fk" ColumnName="Stations_Fk" />
+                <ScalarProperty Name="Buses_FK" ColumnName="Buses_FK" />
+                <ScalarProperty Name="Station_Buses_ID" ColumnName="Station_Buses_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROUTEs">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.ROUTE">
+              <MappingFragment StoreEntitySet="ROUTEs">
+                <ScalarProperty Name="Route_Coordinates" ColumnName="Route_Coordinates" />
+                <ScalarProperty Name="Bus_ID" ColumnName="Bus_ID" />
+                <ScalarProperty Name="Route_ID" ColumnName="Route_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BUS">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.BUS">
+              <MappingFragment StoreEntitySet="BUSES">
+                <ScalarProperty Name="Bus_Color" ColumnName="Bus_Color" />
+                <ScalarProperty Name="Bus_Provider" ColumnName="Bus_Provider" />
+                <ScalarProperty Name="Bus_Description" ColumnName="Bus_Description" />
+                <ScalarProperty Name="Bus_ID" ColumnName="Bus_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STATIONS">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.STATION">
+              <MappingFragment StoreEntitySet="STATIONS">
+                <ScalarProperty Name="Station_Coordinates" ColumnName="Station_Coordinates" />
+                <ScalarProperty Name="Station_Description" ColumnName="Station_Description" />
+                <ScalarProperty Name="Station_ID" ColumnName="Station_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LANDMARKs">
+            <EntityTypeMapping TypeName="Teste_OnibusModel.LANDMARK">
+              <MappingFragment StoreEntitySet="LANDMARKs">
+                <ScalarProperty Name="Landmark_Coordinates" ColumnName="Landmark_Coordinates" />
+                <ScalarProperty Name="Landmark_ID" ColumnName="Landmark_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
