@@ -1,0 +1,75 @@
+{"Station_Description": "Station 1",
+"Station_Coordinates": "-87.6366091,41.9238976"}, 
+
+{"Station_Description": "Station 2",
+"Station_Coordinates": "-87.6366949,41.9256218"}, 
+
+{"Station_Description": "Station 3",
+"Station_Coordinates": "-87.639184,41.9256538"}, 
+
+{"Station_Description": "Station 4",
+"Station_Coordinates": "-87.6493549,41.925558"}, 
+
+{"Station_Description": "Station 5",
+"Station_Coordinates": "-87.6492691,41.9385839"}, 
+
+{"Station_Description": "Station 6",
+"Station_Coordinates": "-87.6544189,41.9484793"}, 
+
+{"Station_Description": "Station 7",
+"Station_Coordinates": "-87.6626158,41.9549903"}, 
+
+{"Station_Description": "Station 8",
+"Station_Coordinates": "-87.6357508,41.9210078"}, 
+
+{"Station_Description": "Station 9",
+"Station_Coordinates": "-87.6236486,41.8976773"}, 
+
+{"Station_Description": "Station 10",
+"Station_Coordinates": "-87.6217175,41.8974857"}, 
+
+{"Station_Description": "Station 11",
+"Station_Coordinates": "-87.6111603,41.8919911"}, 
+
+{"Station_Description": "Station 12",
+"Station_Coordinates": "-87.6340771,41.8891159"}, 
+
+{"Station_Description": "Station 13",
+"Station_Coordinates": "-87.6265669,41.8893076"}, 
+
+{"Station_Description": "Station 14",
+"Station_Coordinates": "-87.6287127,41.8892277"}, 
+
+{"Station_Description": "Station 15",
+"Station_Coordinates": "-87.6314378,41.8891958"}, 
+
+{"Station_Description": "Station 16",
+"Station_Coordinates": "-87.6300859,41.8908411"}, 
+
+{"Station_Description": "Station 17",
+"Station_Coordinates": "-87.6254082,41.8910008"}, 
+
+{"Station_Description": "Station 18",
+"Station_Coordinates": "-87.6273608,41.8917356"}, 
+
+{"Station_Description": "Station 19",
+"Station_Coordinates": "-87.6243567,41.8923745"}, 
+
+{"Station_Description": "Station 20",
+"Station_Coordinates": "-87.624464,41.8942912"}, 
+
+{"Station_Description": "Station 21",
+"Station_Coordinates": "-87.6243782,41.8968947"}, 
+
+{"Station_Description": "Station 22",
+"Station_Coordinates": "-87.623992,41.9003126"}, 
+
+{"Station_Description": "Station 23",
+"Station_Coordinates": "-87.6191425,41.8910966"}, 
+
+{"Station_Description": "Station 24",
+"Station_Coordinates": "-87.6215887,41.889659"}, 
+
+{"Station_Description": "Rotas de Station 22 até Station 23",
+"Station_Coordinates": "}, 
+

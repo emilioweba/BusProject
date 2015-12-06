@@ -34,10 +34,10 @@
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadKMLEstaçõesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cadastroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rotaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onibusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pontoDeReferenciaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.estaçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rotaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pontoDeReferenciaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cboBuses = new System.Windows.Forms.ComboBox();
             this.lblRecommendations = new System.Windows.Forms.Label();
             this.lblReferenceSearch = new System.Windows.Forms.Label();
@@ -97,41 +97,41 @@
             // cadastroToolStripMenuItem
             // 
             this.cadastroToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rotaToolStripMenuItem,
             this.onibusToolStripMenuItem,
-            this.pontoDeReferenciaToolStripMenuItem,
-            this.estaçãoToolStripMenuItem});
+            this.estaçãoToolStripMenuItem,
+            this.rotaToolStripMenuItem,
+            this.pontoDeReferenciaToolStripMenuItem});
             this.cadastroToolStripMenuItem.Name = "cadastroToolStripMenuItem";
             this.cadastroToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
             this.cadastroToolStripMenuItem.Text = "Management";
             // 
-            // rotaToolStripMenuItem
-            // 
-            this.rotaToolStripMenuItem.Name = "rotaToolStripMenuItem";
-            this.rotaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.rotaToolStripMenuItem.Text = "Route";
-            this.rotaToolStripMenuItem.Click += new System.EventHandler(this.rotaToolStripMenuItem_Click);
-            // 
             // onibusToolStripMenuItem
             // 
             this.onibusToolStripMenuItem.Name = "onibusToolStripMenuItem";
-            this.onibusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.onibusToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.onibusToolStripMenuItem.Text = "Bus";
             this.onibusToolStripMenuItem.Click += new System.EventHandler(this.onibusToolStripMenuItem_Click);
-            // 
-            // pontoDeReferenciaToolStripMenuItem
-            // 
-            this.pontoDeReferenciaToolStripMenuItem.Name = "pontoDeReferenciaToolStripMenuItem";
-            this.pontoDeReferenciaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pontoDeReferenciaToolStripMenuItem.Text = "Landmark";
-            this.pontoDeReferenciaToolStripMenuItem.Click += new System.EventHandler(this.pontoDeReferenciaToolStripMenuItem_Click);
             // 
             // estaçãoToolStripMenuItem
             // 
             this.estaçãoToolStripMenuItem.Name = "estaçãoToolStripMenuItem";
-            this.estaçãoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.estaçãoToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.estaçãoToolStripMenuItem.Text = "Station";
             this.estaçãoToolStripMenuItem.Click += new System.EventHandler(this.estaçãoToolStripMenuItem_Click);
+            // 
+            // rotaToolStripMenuItem
+            // 
+            this.rotaToolStripMenuItem.Name = "rotaToolStripMenuItem";
+            this.rotaToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.rotaToolStripMenuItem.Text = "Route";
+            this.rotaToolStripMenuItem.Click += new System.EventHandler(this.rotaToolStripMenuItem_Click);
+            // 
+            // pontoDeReferenciaToolStripMenuItem
+            // 
+            this.pontoDeReferenciaToolStripMenuItem.Name = "pontoDeReferenciaToolStripMenuItem";
+            this.pontoDeReferenciaToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.pontoDeReferenciaToolStripMenuItem.Text = "Landmark";
+            this.pontoDeReferenciaToolStripMenuItem.Click += new System.EventHandler(this.pontoDeReferenciaToolStripMenuItem_Click);
             // 
             // cboBuses
             // 
@@ -233,6 +233,7 @@
             this.Name = "Form_Search";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Search Form";
+            this.Activated += new System.EventHandler(this.Form_Search_Activated);
             this.Load += new System.EventHandler(this.Form_Search_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

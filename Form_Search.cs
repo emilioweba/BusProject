@@ -35,17 +35,28 @@ namespace Bus_Application
 
         private void Form_Search_Load(object sender, EventArgs e)
         {
-            DBStation db = new DBStation(new Teste_OnibusContext());
+            loadStationCombobox();
+        }
 
-            IEnumerable<STATION> enumerable = db.Select();
+        public void loadStationCombobox()
+        {
+            using (Teste_OnibusContext db = new Teste_OnibusContext())
+            {
 
-            cboStation.DataSource = enumerable;
-            cboStation.DisplayMember = "Station_Description";
-            cboStation.ValueMember = "Station_ID";
+                db.Database.Connection.Open();
 
-            txtDistance.Visible = false;
-            lblDistance.Visible = false;
-            lblMeters.Visible = false;
+                //DBStation db = new DBStation(new Teste_OnibusContext());
+
+                IEnumerable<STATION> enumerable = db.STATIONS.ToList();
+
+                cboStation.DataSource = enumerable;
+                cboStation.DisplayMember = "Station_Description";
+                cboStation.ValueMember = "Station_ID";
+
+                txtDistance.Visible = false;
+                lblDistance.Visible = false;
+                lblMeters.Visible = false;
+            }
         }
 
         private void rotaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -102,7 +113,7 @@ namespace Bus_Application
             lblMessage.Text = String.Empty;
             try
             {
-                int distance = 100;
+                int distance = 300;
                 //if (!getDistance(ref distance))
                 //{
                 //    throw new Exception("Distância inserida em formato incorreto. Favor utilizar apenas números inteiros acima de zero.");
@@ -116,49 +127,46 @@ namespace Bus_Application
 
                 if (landmarkResult.Count() > 1)
                 {
-                    Methods.DisplayMessage(lblMessage, "Retornou mais de 1 resultado. Especifique melhor a busca", Color.Red); //Especificar melhor a busca
+                    Methods.DisplayMessage(lblMessage, "More then one place has this name. Plese be more specific.", Color.Red); //Especificar melhor a busca
                 }
                 else if (landmarkResult.Count() == 0)
                 {
-                    Methods.DisplayMessage(lblMessage, "Não existe local com essa descrição", Color.Red);
+                    Methods.DisplayMessage(lblMessage, "No local was found with this description", Color.Red);
                     //fillRecommendedBuses(kml, getCoordinatesReference(txtKeyword.Text)); //pesquisa no Google Maps
                 }
                 else
                 {
                     //txtResultPontoReferencia.Text = landmarkResult.ElementAt(0).LandmarkKnownAs.Known_As_Description;
-                    
+
                     fillRecommendedBuses(landmarkResult.ElementAt(0).Landmark.Landmark_Coordinates, context, (STATION)cboStation.SelectedItem, distance); //ja está cadastrado no Banco de Dados
-                    Methods.DisplayMessage(lblMessage, "Consulta realizada com sucesso!", Color.Green);
+                    Methods.DisplayMessage(lblMessage, "See your recommended buses!", Color.Green);
                 }
             }
             catch (Exception ex)
             {
                 Methods.DisplayMessage(lblMessage, ex.Message, Color.Red);
             }
-            
+
         }
 
         private void fillRecommendedBuses(DbGeography coordinatesReference, Teste_OnibusContext context, STATION selectedStation, int distance)
         {
             List<BUS> recommendedBus = new List<BUS>();
             DBStation_Bus dbStationBus = new DBStation_Bus(context);
-            
+
             // seleciona os ônibus que passam na estação a menos de DISTANCE metros do ponto de referência
             var stationsNear = dbStationBus.SelectStationsNear(distance, coordinatesReference);
 
             foreach (var station in stationsNear)
             {
                 // para cada ônibus que passa no ponto de refência, verifica se ele também passa na estação em que o usuário está
-                var busInStation = dbStationBus.SelectStationBus(station.BUS, selectedStation); 
+                var busInStation = dbStationBus.SelectStationBus(station.BUS, selectedStation);
 
                 foreach (var item in busInStation)
                 {
                     if (!recommendedBus.Contains(item.Bus)) // se passar, recomenda ele para o usuário
                         recommendedBus.Add(item.Bus);
                 }
-
-                // if (!recommendedBus.Contains(station.BUS))
-                //  recommendedBus.Add(station.BUS);
             }
 
             cboBuses.DataSource = recommendedBus.Select(x => x.Bus_Description).ToList();
@@ -184,7 +192,7 @@ namespace Bus_Application
                 }
             }
         }
-        
+
         private double[] getCoordinatesReference(string referenceDescription) //pesquisa no Google Maps
         {
             using (var client = new WebClient())
@@ -202,14 +210,14 @@ namespace Bus_Application
 
                 //var oi = client.DownloadString("https://www.google.com/maps/search/Churrascaria+Barriga+Verde+Sao+Luis/");
                 //var ser = new XmlSerializer(typeof(object));
-                
+
                 var json = client.DownloadString(urlMap.ToString());
                 var serializer = new JavaScriptSerializer();
                 var dict = serializer.Deserialize<dynamic>(json);
 
                 //textBox1.Text = dict["results"][0]["geometry"]["location"]["lat"].ToString() + "," + dict["results"][0]["geometry"]["location"]["lng"].ToString();
 
-                return new double[2] { double.Parse( dict["results"][0]["geometry"]["location"]["lat"].ToString()), double.Parse(dict["results"][0]["geometry"]["location"]["lng"].ToString())};
+                return new double[2] { double.Parse(dict["results"][0]["geometry"]["location"]["lat"].ToString()), double.Parse(dict["results"][0]["geometry"]["location"]["lng"].ToString()) };
             }
 
         }
@@ -221,9 +229,12 @@ namespace Bus_Application
 
         private string processString(string text)
         {
-            return Regex.Replace(text.Replace(',',' '), @"\s+", " ").Trim().ToUpper();
+            return Regex.Replace(text.Replace(',', ' '), @"\s+", " ").Trim().ToUpper();
         }
 
-
+        private void Form_Search_Activated(object sender, EventArgs e)
+        {
+            loadStationCombobox();
+        }
     }
 }

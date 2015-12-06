@@ -53,7 +53,7 @@ namespace Bus_Application
                 {
                     dBase.Database.ExecuteSqlCommand("DELETE FROM ROUTES");
                     dBase.Database.ExecuteSqlCommand("DELETE FROM STATION_BUSES");
-                    dBase.Database.ExecuteSqlCommand("DELETE FROM BUSES");
+                    dBase.Database.ExecuteSqlCommand("DELETE FROM BUS");
                     transaction.Commit();
                 }
                 catch (Exception ex)

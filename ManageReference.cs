@@ -14,14 +14,18 @@ namespace Bus_Application
     public partial class ManageReference : Form
     {
         Form parentForm;
-        DBBus dbBus;
+        Teste_OnibusContext context;
+
         public ManageReference(Form parent)
         {
             InitializeComponent();
             this.parentForm = parent;
-            
-            Teste_OnibusContext context = new Teste_OnibusContext();
-            dbBus = new DBBus(context);
+            txtMain.Enabled = false;
+
+            using (context = new Teste_OnibusContext())
+            {
+                loadGridViewData(context);
+            }
         }
 
         #region BasicEvents
@@ -32,10 +36,15 @@ namespace Bus_Application
             {
                 enableFields(true);
 
-                txtDescription.Text = dgvReferences["Bus_Description", e.RowIndex].Value.ToString();
-                txtProvider.Text = dgvReferences["Bus_Provider", e.RowIndex].Value.ToString();
-                txtColor.Text = dgvReferences["Bus_Color", e.RowIndex].Value.ToString();
-                txtID.Text = dgvReferences["ID", e.RowIndex].Value.ToString();
+                int id = int.Parse(dgvReferences["Known_As_ID", e.RowIndex].Value.ToString());
+
+                using (context = new Teste_OnibusContext())
+                {
+                    var mainLandmark = context.LANDMARK_KNOWN_AS.FirstOrDefault(x => x.Known_As_ID == id).LANDMARK.LANDMARK_KNOWN_AS.OrderBy(x => x.Known_As_ID).First().Known_As_Description;
+                    txtMain.Text = mainLandmark;
+                    txtKnown.Text = dgvReferences["Known_As_Description", e.RowIndex].Value.ToString();
+                    txtID.Text = id.ToString();
+                }
 
                 lblMessage.Text = "";
             }
@@ -57,16 +66,38 @@ namespace Bus_Application
         private void dgvReferences_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             lblMessage.Text = string.Empty;
-            if (MessageBox.Show("Ao realizar essa operação, a rota desse ônibus também será deletada. Tem certeza que deseja continuar?", "Confirmação", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("When performing this operation, all related landmarks will also be deleted. Are you sure you want to continue?", "Confirmation", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
                 try
                 {
-                    dbBus.Delete(int.Parse(e.Row.Cells["ID"].Value.ToString()));
-                    Methods.DisplayMessage(lblMessage, "Removido com sucesso!", Color.Green);
+                    using (context = new Teste_OnibusContext())
+                    {
+                        var id = int.Parse(e.Row.Cells["Known_As_ID"].Value.ToString());
+
+                        LANDMARK_KNOWN_AS landmark = context.LANDMARK_KNOWN_AS.FirstOrDefault(x => x.Known_As_ID == id);
+
+                        var parentLandmark = landmark.LANDMARK;
+                        var relatedLandmarks = parentLandmark.LANDMARK_KNOWN_AS.ToList();
+
+                        foreach (var item in relatedLandmarks)
+                        {
+                            context.LANDMARK_KNOWN_AS.Remove(item);
+                        }
+
+                        context.LANDMARK_KNOWN_AS.Remove(landmark);
+                        context.LANDMARKs.Remove(parentLandmark);
+
+                        context.SaveChanges();
+
+                        if (loadGridViewData(context))
+                        {
+                            Methods.DisplayMessage(lblMessage, "Deleted successfully!", Color.Green);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Methods.DisplayMessage(lblMessage, "Erro ao remover registro", Color.Red);
+                    Methods.DisplayMessage(lblMessage, "Error while deleting", Color.Red);
                 }
                 enableFields(false);
             }
@@ -87,97 +118,111 @@ namespace Bus_Application
         {
             bool valid = true;
 
-            if (txtDescription.Text.Trim().Equals(string.Empty))
+            if (txtMain.Text.Trim().Equals(string.Empty))
+            {
                 valid = false;
+            }
+            else if (txtKnown.Text.Trim().Equals(string.Empty))
+            {
+                valid = false;
+            }
 
             return valid;
         }
 
         private void resetFields()
         {
-            txtDescription.Text = "";
-            txtProvider.Text = "";
-            txtColor.Text = "";
+            txtMain.Text = "";
+            txtKnown.Text = "";
             txtID.Text = "";
         }
 
         private void enableFields(bool enable)
         {
-            txtDescription.Enabled = enable;
-            txtColor.Enabled = enable;
-            txtProvider.Enabled = enable;
+            //txtMain.Enabled = enable;
+            txtKnown.Enabled = enable;
             btnAdd.Enabled = enable;
 
-            txtDescription.Text = "";
-            txtColor.Text = "";
-            txtProvider.Text = "";
+            txtMain.Text = "";
+            txtKnown.Text = "";
             txtID.Text = "";
+        }
+
+        private void dgvReferencesColumnsVisible(bool visible)
+        {
+            dgvReferences.Columns[1].Visible = visible;
+            dgvReferences.Columns[2].Visible = visible;
+            dgvReferences.Columns[4].Visible = visible;
+            dgvReferences.Columns[5].Visible = visible;
         }
 
         #endregion
 
         private void ManageReference_Load(object sender, EventArgs e)
         {
-            //this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet.BUSES);
             lblMessage.Text = "";
 
-            DBLandmark a = new DBLandmark(new Teste_OnibusContext());
-            var b = a.SelectLandmarkDescription();
-
-            DataSet dd = new DataSet();
-            
-            //dgvReferences.DataSource = b;
+            dgvReferencesColumnsVisible(false);
 
             enableFields(false);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(validFields())
+            if (validFields())
             {
-                if (txtID.Text.Length > 0) //Alterar
+                if (txtID.Text.Length > 0) //Alter
                 {
                     try
                     {
-                        BUS bus = new BUS();
+                        using (context = new Teste_OnibusContext())
+                        {
+                            var id = int.Parse(txtID.Text);
+                            LANDMARK_KNOWN_AS landmark = context.LANDMARK_KNOWN_AS.FirstOrDefault(x => x.Known_As_ID == id);
 
-                        bus.Bus_ID = int.Parse(txtID.Text);
-                        bus.Bus_Description = txtDescription.Text;
-                        bus.Bus_Provider = txtProvider.Text;
-                        bus.Bus_Color = txtColor.Text;
+                            landmark.Known_As_Description = txtKnown.Text;
 
-                        dbBus.Edit(bus);
-                        //this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet.BUSES);
+                            context.SaveChanges();
 
-                        lblMessage.Text = "Alterado com sucesso!";
-                        lblMessage.ForeColor = Color.Green;
-                        enableFields(false);
+                            if (loadGridViewData(context))
+                            {
+                                lblMessage.Text = "Updated successfully!";
+                                lblMessage.ForeColor = Color.Green;
+                                enableFields(false);
+                            }
+                        }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-                        Methods.DisplayMessage(lblMessage, "Não foi possível alterar os campos", Color.Red);
+                        Methods.DisplayMessage(lblMessage, "It was not possible to update the data", Color.Red);
                     }
                 }
-                //else // Adicionar
-                //{
-                //    BUS bus = new BUS();
-
-                //    bus.Bus_Description = txtDescription.Text;
-                //    bus.Bus_Provider = txtProvider.Text;
-                //    bus.Bus_Color = txtColor.Text;
-
-                //    dbBus.Add(bus);
-                //    this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet.BUSES);
-
-                //    lblMessage.Text = "Adicionado com sucesso!";
-                //    lblMessage.ForeColor = Color.Green;
-                //}
             }
             else
             {
-                Methods.DisplayMessage(lblMessage, "Verifique os campos informados", Color.Red);
+                Methods.DisplayMessage(lblMessage, "Check the input data", Color.Red);
             }
             resetFields();
+        }
+
+        private bool loadGridViewData(Teste_OnibusContext context)
+        {
+            try
+            {
+                dgvReferences.DataSource = null;
+
+                var list = new BindingList<LANDMARK_KNOWN_AS>(context.LANDMARK_KNOWN_AS.ToList());
+                var source = new BindingSource(list, null);
+                dgvReferences.DataSource = source;
+
+                dgvReferencesColumnsVisible(false);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
     }

@@ -28,19 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblDescription = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.dgvStations = new System.Windows.Forms.DataGridView();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sTATIONSBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblMessage = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStations)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sTATIONSBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lblDescription
@@ -74,20 +71,18 @@
             // 
             this.dgvStations.AllowUserToAddRows = false;
             this.dgvStations.AllowUserToResizeRows = false;
-            this.dgvStations.AutoGenerateColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvStations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStations.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Edit,
             this.ID});
-            this.dgvStations.DataSource = this.sTATIONSBindingSource;
             this.dgvStations.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvStations.Location = new System.Drawing.Point(122, 139);
             this.dgvStations.MultiSelect = false;
@@ -122,10 +117,6 @@
             this.ID.ReadOnly = true;
             this.ID.Visible = false;
             this.ID.Width = 60;
-            // 
-            // sTATIONSBindingSource
-            // 
-            this.sTATIONSBindingSource.DataMember = "STATIONS";
             // 
             // lblMessage
             // 
@@ -162,7 +153,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManageStations_FormClosed);
             this.Load += new System.EventHandler(this.ManageStations_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStations)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sTATIONSBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,7 +166,6 @@
         private System.Windows.Forms.DataGridView dgvStations;
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.TextBox txtID;
-        private System.Windows.Forms.BindingSource sTATIONSBindingSource;
         private System.Windows.Forms.DataGridViewImageColumn Edit;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Station_Description;

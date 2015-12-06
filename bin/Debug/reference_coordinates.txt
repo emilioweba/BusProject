@@ -1,0 +1,42 @@
+{"Known_As_Description": "Lincoln Park Zoo",
+-87.6348495,41.9213112"}, 
+
+{"Known_As_Description": "Wrigley Field",
+-87.6554489,41.9480005"}, 
+
+{"Known_As_Description": "The Drake",
+-87.6238632,41.9002967"}, 
+
+{"Known_As_Description": "Museum of Contemporary Art",
+-87.6215458,41.8969746"}, 
+
+{"Known_As_Description": "Merchandise Mart",
+-87.6346779,41.888413"}, 
+
+{"Known_As_Description": "Navy Pier",
+-87.6100445,41.8916397"}, 
+
+{"Known_As_Description": "NBC Tower",
+-87.62146,41.8899146"}, 
+
+{"Known_As_Description": "Trump Tower",
+-87.6266527,41.8889881"}, 
+
+{"Known_As_Description": "Apple Store",
+-87.6238739,41.8947784"}, 
+
+{"Known_As_Description": "Water Tower",
+-87.6229191,41.8977412"}, 
+
+{"Known_As_Description": "Loyola University",
+-87.6264381,41.8974857"}, 
+
+{"Known_As_Description": "Graceland Cemetery",
+-87.6623583,41.9546392"}, 
+
+{"Known_As_Description": "Music Box Theatre",
+-87.6640749,41.9497879"}, 
+
+{"Known_As_Description": "Apollo Theater",
+-87.6532173,41.9282719"}, 
+

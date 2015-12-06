@@ -36,13 +36,11 @@
             this.lblMessage = new System.Windows.Forms.Label();
             this.btnClearStationReferences = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.chbBus = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.btnClearAll = new System.Windows.Forms.Button();
+            this.chbBus = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -90,9 +88,9 @@
             // 
             // lblMessage
             // 
-            this.lblMessage.Location = new System.Drawing.Point(70, 232);
+            this.lblMessage.Location = new System.Drawing.Point(70, 218);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(223, 38);
+            this.lblMessage.Size = new System.Drawing.Size(223, 52);
             this.lblMessage.TabIndex = 10;
             // 
             // btnClearStationReferences
@@ -114,33 +112,15 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Clear Reference Points:";
             // 
-            // chbBus
-            // 
-            this.chbBus.AutoSize = true;
-            this.chbBus.Location = new System.Drawing.Point(14, 12);
-            this.chbBus.Name = "chbBus";
-            this.chbBus.Size = new System.Drawing.Size(97, 17);
-            this.chbBus.TabIndex = 13;
-            this.chbBus.Text = "Bus and Route";
-            this.chbBus.UseVisualStyleBackColor = true;
-            this.chbBus.CheckedChanged += new System.EventHandler(this.chbBus_CheckedChanged);
-            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chbBus);
             this.panel1.Controls.Add(this.rdbStations);
             this.panel1.Controls.Add(this.rdbReferences);
             this.panel1.Location = new System.Drawing.Point(144, 117);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(149, 61);
+            this.panel1.Size = new System.Drawing.Size(149, 86);
             this.panel1.TabIndex = 16;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.chbBus);
-            this.panel2.Location = new System.Drawing.Point(144, 175);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(149, 40);
-            this.panel2.TabIndex = 17;
             // 
             // label2
             // 
@@ -161,6 +141,17 @@
             this.btnClearAll.UseVisualStyleBackColor = true;
             this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
             // 
+            // chbBus
+            // 
+            this.chbBus.AutoSize = true;
+            this.chbBus.Location = new System.Drawing.Point(14, 58);
+            this.chbBus.Name = "chbBus";
+            this.chbBus.Size = new System.Drawing.Size(96, 17);
+            this.chbBus.TabIndex = 5;
+            this.chbBus.Text = "Bus and Route";
+            this.chbBus.UseVisualStyleBackColor = true;
+            this.chbBus.CheckedChanged += new System.EventHandler(this.chbBus_CheckedChanged);
+            // 
             // UploadKML
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,7 +159,6 @@
             this.ClientSize = new System.Drawing.Size(349, 363);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnClearAll);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnClearStationReferences);
@@ -183,8 +173,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UploadKMLStations_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,10 +188,9 @@
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Button btnClearStationReferences;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox chbBus;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnClearAll;
+        private System.Windows.Forms.RadioButton chbBus;
     }
 }

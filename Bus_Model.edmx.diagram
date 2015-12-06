@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2eb7efb6fcd44aef98d242523091d376" Name="Diagram1" ZoomLevel="85" DisplayType="true" ShowGrid="false" SnapToGrid="false">
-        <EntityTypeShape EntityType="Teste_OnibusModel.LANDMARK_KNOWN_AS" Width="2.25" PointX="11.195382341702414" PointY="4.6558670725860178" IsExpanded="true" />
-        <EntityTypeShape EntityType="Teste_OnibusModel.STATION_BUSES" Width="2" PointX="1.5033784153863747" PointY="5.0996621061059324" IsExpanded="true" />
+      <Diagram DiagramId="2eb7efb6fcd44aef98d242523091d376" Name="Diagram1" ZoomLevel="92" DisplayType="true" ShowGrid="false" SnapToGrid="false">
+        <EntityTypeShape EntityType="Teste_OnibusModel.LANDMARK_KNOWN_AS" Width="2.25" PointX="10.899003629555672" PointY="4.6589673906881606" IsExpanded="true" />
+        <EntityTypeShape EntityType="Teste_OnibusModel.STATION_BUSES" Width="2" PointX="1.6811594170035247" PointY="4.77400362955567" IsExpanded="true" />
         <EntityTypeShape EntityType="Teste_OnibusModel.ROUTE" Width="2.625" PointX="5.1069814725485712" PointY="1.3686732705968223" IsExpanded="true" />
         <EntityTypeShape EntityType="Teste_OnibusModel.BUS" Width="2.125" PointX="1.457769770814505" PointY="1.2326781438858161" IsExpanded="true" />
         <AssociationConnector Association="Teste_OnibusModel.FK_Route_Bus" />
         <AssociationConnector Association="Teste_OnibusModel.FK_STATION_BUSES_BUSES1" />
-        <EntityTypeShape EntityType="Teste_OnibusModel.STATION" Width="2.875" PointX="5.9054053357432945" PointY="5.0962589139577847" IsExpanded="true" />
+        <EntityTypeShape EntityType="Teste_OnibusModel.STATION" Width="2.875" PointX="5.7730978279355174" PointY="4.8079710202438317" IsExpanded="true" />
         <AssociationConnector Association="Teste_OnibusModel.FK_STATION_BUSES_STATIONS" />
-        <EntityTypeShape EntityType="Teste_OnibusModel.LANDMARK" Width="2.75" PointX="9.2438057451705475" PointY="0.78242324529537122" IsExpanded="true" />
+        <EntityTypeShape EntityType="Teste_OnibusModel.LANDMARK" Width="2.75" PointX="9.3405797085017621" PointY="1.1349637611324899" IsExpanded="true" />
         <AssociationConnector Association="Teste_OnibusModel.FK_LANDMARK_KNOWN_AS_LANDMARKs" />
         </Diagram>
     </edmx:Diagrams>

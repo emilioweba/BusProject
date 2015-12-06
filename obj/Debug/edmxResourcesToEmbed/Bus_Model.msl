@@ -2,56 +2,56 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="Teste_OnibusModelStoreContainer" CdmEntityContainer="Teste_OnibusContext">
     <EntitySetMapping Name="LANDMARK_KNOWN_AS">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.LANDMARK_KNOWN_AS">
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.LANDMARK_KNOWN_AS)">
         <MappingFragment StoreEntitySet="LANDMARK_KNOWN_AS">
-          <ScalarProperty Name="Landmark_FK" ColumnName="Landmark_FK" />
-          <ScalarProperty Name="Known_As_Description" ColumnName="Known_As_Description" />
           <ScalarProperty Name="Known_As_ID" ColumnName="Known_As_ID" />
+          <ScalarProperty Name="Known_As_Description" ColumnName="Known_As_Description" />
+          <ScalarProperty Name="Landmark_FK" ColumnName="Landmark_FK" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="STATION_BUSES">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.STATION_BUSES">
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.STATION_BUSES)">
         <MappingFragment StoreEntitySet="STATION_BUSES">
-          <ScalarProperty Name="Stations_Fk" ColumnName="Stations_Fk" />
-          <ScalarProperty Name="Buses_FK" ColumnName="Buses_FK" />
           <ScalarProperty Name="Station_Buses_ID" ColumnName="Station_Buses_ID" />
+          <ScalarProperty Name="Buses_FK" ColumnName="Buses_FK" />
+          <ScalarProperty Name="Stations_Fk" ColumnName="Stations_Fk" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ROUTEs">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.ROUTE">
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.ROUTE)">
         <MappingFragment StoreEntitySet="ROUTEs">
-          <ScalarProperty Name="Route_Coordinates" ColumnName="Route_Coordinates" />
-          <ScalarProperty Name="Bus_ID" ColumnName="Bus_ID" />
           <ScalarProperty Name="Route_ID" ColumnName="Route_ID" />
+          <ScalarProperty Name="Bus_ID" ColumnName="Bus_ID" />
+          <ScalarProperty Name="Route_Coordinates" ColumnName="Route_Coordinates" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="BUS">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.BUS">
-        <MappingFragment StoreEntitySet="BUSES">
-          <ScalarProperty Name="Bus_Color" ColumnName="Bus_Color" />
-          <ScalarProperty Name="Bus_Provider" ColumnName="Bus_Provider" />
-          <ScalarProperty Name="Bus_Description" ColumnName="Bus_Description" />
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.BUS)">
+        <MappingFragment StoreEntitySet="BUS">
           <ScalarProperty Name="Bus_ID" ColumnName="Bus_ID" />
+          <ScalarProperty Name="Bus_Description" ColumnName="Bus_Description" />
+          <ScalarProperty Name="Bus_Provider" ColumnName="Bus_Provider" />
+          <ScalarProperty Name="Bus_Color" ColumnName="Bus_Color" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="STATIONS">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.STATION">
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.STATION)">
         <MappingFragment StoreEntitySet="STATIONS">
-          <ScalarProperty Name="Station_Coordinates" ColumnName="Station_Coordinates" />
-          <ScalarProperty Name="Station_Description" ColumnName="Station_Description" />
           <ScalarProperty Name="Station_ID" ColumnName="Station_ID" />
+          <ScalarProperty Name="Station_Description" ColumnName="Station_Description" />
+          <ScalarProperty Name="Station_Coordinates" ColumnName="Station_Coordinates" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LANDMARKs">
-      <EntityTypeMapping TypeName="Teste_OnibusModel.LANDMARK">
+      <EntityTypeMapping TypeName="IsTypeOf(Teste_OnibusModel.LANDMARK)">
         <MappingFragment StoreEntitySet="LANDMARKs">
-          <ScalarProperty Name="Landmark_Coordinates" ColumnName="Landmark_Coordinates" />
           <ScalarProperty Name="Landmark_ID" ColumnName="Landmark_ID" />
+          <ScalarProperty Name="Landmark_Coordinates" ColumnName="Landmark_Coordinates" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

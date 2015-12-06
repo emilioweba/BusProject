@@ -14,15 +14,17 @@ namespace Bus_Application
     public partial class ManageStations : Form
     {
         Form parentForm;
-        DBStation dbStation;
+        Teste_OnibusContext context;
 
         public ManageStations(Form parent)
         {
             InitializeComponent();
             this.parentForm = parent;
-            
-            Teste_OnibusContext context = new Teste_OnibusContext();
-            dbStation = new DBStation(context);
+
+            using (context = new Teste_OnibusContext())
+            {
+                loadGridViewData(context);
+            }
         }
 
         #region BasicEvents
@@ -56,16 +58,33 @@ namespace Bus_Application
         private void dgvStations_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             lblMessage.Text = string.Empty;
-            if (MessageBox.Show("Ao realizar essa operação, a rota dos ônibus que passam por essa estação será alterada. Tem certeza que deseja continuar?", "Confirmação", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("When performing this operation, the route of the buses that pass through this station will be changed. Are you sure you want to continue?", "Confirmation", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
                 try
                 {
-                    dbStation.Delete(int.Parse(e.Row.Cells["ID"].Value.ToString()));
-                    Methods.DisplayMessage(lblMessage, "Removido com sucesso!", Color.Green);
+                    using (context = new Teste_OnibusContext())
+                    {
+                        var id = int.Parse(e.Row.Cells["ID"].Value.ToString());
+
+                        STATION station = context.STATIONS.FirstOrDefault(x => x.Station_ID == id);
+
+                        List<STATION_BUSES> station_bus = context.STATION_BUSES.Where(x => x.Stations_Fk == id).ToList();
+
+                        foreach (var item in station_bus)
+                        {
+                            context.STATION_BUSES.Remove(item);
+                        }
+
+                        context.STATIONS.Remove(station);
+
+                        context.SaveChanges();
+                    }
+
+                    Methods.DisplayMessage(lblMessage, "Deleted successfully!", Color.Green);
                 }
                 catch (Exception ex)
                 {
-                    Methods.DisplayMessage(lblMessage, "Erro ao remover registro", Color.Red);
+                    Methods.DisplayMessage(lblMessage, "Error while deleting", Color.Red);
                 }
                 enableFields(false);
             }
@@ -117,8 +136,11 @@ namespace Bus_Application
 
         private void ManageStations_Load(object sender, EventArgs e)
         {
-            //this.sTATIONSTableAdapter.Fill(this.teste_OnibusDataSet3.STATIONS);
             lblMessage.Text = "";
+
+            dgvStations.Columns[1].Visible = false;
+            dgvStations.Columns[3].Visible = false;
+            dgvStations.Columns[4].Visible = false;
 
             enableFields(false);
         }
@@ -127,47 +149,74 @@ namespace Bus_Application
         {
             if(validFields())
             {
-                if (txtID.Text.Length > 0) //Alterar
+                if (txtID.Text.Length > 0) //Alter
                 {
                     try
                     {
-                        STATION station = new STATION();
+                        using (context = new Teste_OnibusContext())
+                        {
+                            var id = int.Parse(txtID.Text);
 
-                        station.Station_ID = int.Parse(txtID.Text);
-                        station.Station_Description = txtDescription.Text;
+                            STATION station = context.STATIONS.FirstOrDefault(x => x.Station_ID == id);
 
-                        dbStation.Edit(station);
-                        //this.sTATIONSTableAdapter.Fill(this.teste_OnibusDataSet3.STATIONS);
-            
-                        lblMessage.Text = "Alterado com sucesso!";
-                        lblMessage.ForeColor = Color.Green;
-                        enableFields(false);
+                            station.Station_Description = txtDescription.Text;
+
+                            context.SaveChanges();
+
+                            if (loadGridViewData(context))
+                            {
+                                lblMessage.Text = "Updated successfully!";
+                                lblMessage.ForeColor = Color.Green;
+                                enableFields(false);
+                            }
+                        }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
-                        Methods.DisplayMessage(lblMessage, "Não foi possível alterar os campos", Color.Red);
+                        Methods.DisplayMessage(lblMessage, "It was not possible to update the data", Color.Red);
                     }
                 }
-                //else // Adicionar
+                //else // Add
                 //{
-                //    BUS bus = new BUS();
+                //    STATION station = new STATION();
 
-                //    bus.Bus_Description = txtDescription.Text;
-                //    bus.Bus_Provider = txtProvider.Text;
-                //    bus.Bus_Color = txtColor.Text;
+                //    station = txtDescription.Text;
 
-                //    dbBus.Add(bus);
-                //    this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet.BUSES);
+                //    using (context = new Teste_OnibusContext())
+                //    {
+                //        context.STATION.Add(station);
 
-                //    lblMessage.Text = "Adicionado com sucesso!";
-                //    lblMessage.ForeColor = Color.Green;
+                //        context.SaveChanges();
+
+                //        if (loadGridViewData(context))
+                //        {
+                //            lblMessage.Text = "Add successfully!";
+                //            lblMessage.ForeColor = Color.Green;
+                //            enableFields(false);
+                //        }
+                //    }
                 //}
             }
             else
             {
-                Methods.DisplayMessage(lblMessage, "Verifique os campos informados", Color.Red);
+                Methods.DisplayMessage(lblMessage, "Check the input data", Color.Red);
             }
             resetFields();
+        }
+
+        private bool loadGridViewData(Teste_OnibusContext context)
+        {
+            try
+            {
+                var list = new BindingList<STATION>(context.STATIONS.ToList());
+                var source = new BindingSource(list, null);
+                dgvStations.DataSource = source;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
     }

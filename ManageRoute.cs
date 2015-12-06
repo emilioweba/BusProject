@@ -14,11 +14,17 @@ namespace Bus_Application
     public partial class ManageRoute : Form
     {
         public Form formParent { get; set; }
+        Teste_OnibusContext context;
  
         public ManageRoute(Form parent)
         {
             InitializeComponent();
             this.formParent = parent;
+
+            using (context = new Teste_OnibusContext())
+            {
+                loadGridViewData(context);
+            }
         }
 
         private void btnAddBus_Click(object sender, EventArgs e)
@@ -42,28 +48,26 @@ namespace Bus_Application
 
         private void ManageRoute_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'teste_OnibusDataSet1.ROUTEs' table. You can move, or remove it, as needed.
-            //this.rOUTEsTableAdapter.Fill(this.teste_OnibusDataSet1.ROUTEs);
-            // TODO: This line of code loads data into the 'teste_OnibusDataSet1.BUSES' table. You can move, or remove it, as needed.
-            //this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet1.BUSES);
-            //this.bUSESTableAdapter.Fill(this.teste_OnibusDataSet.BUSES);
+           
 
-            DBRoute db = new DBRoute(new Teste_OnibusContext());
+           
 
-            var a = db.SelectRouteBus();
+            
+        }
 
-            foreach (var item in a)
+        private bool loadGridViewData(Teste_OnibusContext context)
+        {
+            try
             {
-                var b = 1;
+                var list = new BindingList<ROUTE>(context.ROUTEs.ToList());
+                var source = new BindingSource(list, null);
+                dgvRoutes.DataSource = source;
+                return true;
             }
-
-            DataSet st = new DataSet();
-            //st = a;
-            //set.Load();
-            
-            //dataGridView1.DataSource = db.SelectRouteBus();
-
-            
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
     }

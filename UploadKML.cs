@@ -18,6 +18,7 @@ namespace Bus_Application
     {
         Form parentForm;
         Teste_OnibusContext context;
+        int count;
 
         public UploadKML(Form parent)
         {
@@ -25,7 +26,7 @@ namespace Bus_Application
             this.parentForm = parent;
             btnBrowse.Enabled = false;
         }
-        
+
         #region Basic Events
 
         private void rdbStations_CheckedChanged(object sender, EventArgs e)
@@ -42,7 +43,7 @@ namespace Bus_Application
 
         private void btnClearStationReferences_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Tem certeza que deseja deletar todos os pontos de referência?", "Confirmação", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("Are you sure you want to delete all the Landmarks?", "Confirmation", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
                 try
                 {
@@ -50,12 +51,12 @@ namespace Bus_Application
                     {
                         DBLandmark db = new DBLandmark(context);
                         db.DeleteAll();
-                        Methods.DisplayMessage(lblMessage, "Todos os registros deletados com sucesso!", Color.Green);
+                        Methods.DisplayMessage(lblMessage, "All records deleted successfully!", Color.Green);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Methods.DisplayMessage(lblMessage, "Não foi possível deletar os registros!", Color.Red);
+                    Methods.DisplayMessage(lblMessage, "It was not possible to delete the records!", Color.Red);
                 }
             }
         }
@@ -63,21 +64,7 @@ namespace Bus_Application
         private void chbBus_CheckedChanged(object sender, EventArgs e)
         {
             lblMessage.Text = String.Empty;
-            rdbReferences.Checked = false;
-            rdbStations.Checked = false;
-
-            if (chbBus.Checked)
-            {
-                rdbReferences.Enabled = false;
-                rdbStations.Enabled = false;
-                btnBrowse.Enabled = true;
-            }
-            else
-            {
-                rdbReferences.Enabled = true;
-                rdbStations.Enabled = true;
-                btnBrowse.Enabled = false;
-            }
+            btnBrowse.Enabled = true;
         }
 
         private void btnClearSelection_Click(object sender, EventArgs e)
@@ -95,7 +82,7 @@ namespace Bus_Application
 
         private void btnClearAll_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Tem certeza que deseja deletar todos os registros?", "Confirmação", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("Are you sure you want to delete all records?", "Confirmation", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
                 try
                 {
@@ -110,12 +97,12 @@ namespace Bus_Application
                         DBStation dbStation = new DBStation(context);
                         dbStation.DeleteAll();
 
-                        Methods.DisplayMessage(lblMessage, "Todos os registros deletados com sucesso!", Color.Green);
+                        Methods.DisplayMessage(lblMessage, "All records deleted successfully!", Color.Green);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Methods.DisplayMessage(lblMessage, "Não foi possível deletar os registros!", Color.Red);
+                    Methods.DisplayMessage(lblMessage, "It was not possible to delete the records!", Color.Red);
                 }
             }
         }
@@ -143,25 +130,36 @@ namespace Bus_Application
                                 done = addBusRoutes(kml); // cadastro o ônibus, a rota e faço o join com as estações em que ele passa
                             }
                             else if (rdbStations.Checked || rdbReferences.Checked) // cadastro as estações ou os pontos de referência
-                            { 
-                                if (kml.Root.Flatten().OfType<Folder>().Any())
-                                    done = parseFolder(kml, done);
-                                else
-                                    done = parsePlacemark(kml.Root.Flatten().OfType<Placemark>(), done);
+                            {
+                                count = 0;
+
+                                string fileName = "";
+
+                                if (rdbStations.Checked)
+                                    fileName = "stations_coordinates.txt";
+                                else if (rdbReferences.Checked)
+                                    fileName = "reference_coordinates.txt";
+
+                                using (StreamWriter writetext = new StreamWriter(fileName))
+                                {
+                                    if (kml.Root.Flatten().OfType<Folder>().Any())
+                                        done = parseFolder(kml, done, writetext);
+                                    else
+                                        done = parsePlacemark(kml.Root.Flatten().OfType<Placemark>(), done, writetext);
+                                }
                             }
- 
                             transaction.Commit();
                             
-                            if(done)
-                                Methods.DisplayMessage(lblMessage, "Carga realizada com sucesso!", Color.Green);
+                            if (done)
+                                Methods.DisplayMessage(lblMessage, "Load completed successfully!", Color.Green);
                             else
-                                Methods.DisplayMessage(lblMessage, "Nenhuma operação foi realizada!", Color.Red);
-                            
+                                Methods.DisplayMessage(lblMessage, "THe operation was not done!", Color.Red);
+
                         }
                         catch (Exception ex)
                         {
                             transaction.Rollback();
-                            Methods.DisplayMessage(lblMessage, "Erro! Não foi possível completar a transação. Consulte Emilio Weba :P", Color.Red);
+                            Methods.DisplayMessage(lblMessage, ex.Message, Color.Red);
                         }
                     }
                 }
@@ -205,7 +203,7 @@ namespace Bus_Application
 
             if (!hasStation)
             {
-                string message = "As estações em que este ônibus passa não estão cadastradas. Por favor, cadastre primeiro as estações, depois a rota do ônibus";
+                string message = "The stations this bus pass by are not in the database. Please insert the stations first, then the bus route";
                 Methods.DisplayMessage(lblMessage, message, Color.Red);
                 throw new Exception(message);
             }
@@ -220,10 +218,28 @@ namespace Bus_Application
         {
             if (chbBus.Checked)
             {
+
+                StringBuilder textString = new StringBuilder();
+
+                bool flag = false;
+
+                textString.Append("Route_Coordinates: ");
+
                 foreach (var lineString in placemark.Flatten().OfType<SharpKml.Dom.LineString>())
                 {
-                    sb.Append(string.Join(" ",
-                        lineString.Coordinates.Select(x => x.Latitude.ToString() + " " + x.Longitude.ToString() + ",")));
+                    flag = true;
+
+                    sb.Append(string.Join(" ", lineString.Coordinates.Select(x => x.Latitude.ToString() + " " + x.Longitude.ToString() + ",")));
+
+                    textString.Append(string.Join(" ", lineString.Coordinates.Select(x => x.Latitude.ToString() + "," + x.Longitude.ToString() + "; ")));
+                }
+
+                if (flag)
+                {
+                    using (StreamWriter writetext = new StreamWriter("write.txt"))
+                    {
+                        writetext.Write(textString.ToString());
+                    }
                 }
             }
         }
@@ -255,25 +271,34 @@ namespace Bus_Application
 
         // Código referente ao cadastro dos Pontos de Referência OU das Estações de Ônibus
         // É realizado um insert nas tabelas STATIONS OU LANDMARKs e LANDMARK_KNOWN_AS
-        private bool parseFolder(KmlFile kml, bool done)
+        private bool parseFolder(KmlFile kml, bool done, StreamWriter writetext)
         {
             foreach (var folder in kml.Root.Flatten().OfType<Folder>())
             {
                 IEnumerable<Placemark> enumerablePlacemark = null;
 
                 if (folder.Flatten().OfType<Placemark>().Any())
-                    enumerablePlacemark = folder.Flatten().OfType<Placemark>();
+                {
+                    if (folder.Flatten().OfType<LineString>().Any())
+                    {
+                        enumerablePlacemark = folder.Flatten().OfType<Placemark>().Take(1);
+                    }
+                    else
+                    {
+                        enumerablePlacemark = folder.Flatten().OfType<Placemark>();
+                    }
+                }
 
-                done = parsePlacemark(enumerablePlacemark, done, kml);
+                done = parsePlacemark(enumerablePlacemark, done, writetext, kml);
             }
             return done;
         }
 
-        private bool parsePlacemark(IEnumerable<Placemark> enumerablePlacemark, bool done, KmlFile kml = null)
+        private bool parsePlacemark(IEnumerable<Placemark> enumerablePlacemark, bool done, StreamWriter writetext, KmlFile kml = null)
         {
             foreach (var placemark in enumerablePlacemark)
             {
-                done = parsePoint(placemark, done);
+                done = parsePoint(placemark, done, writetext);
                 if (placemark.Flatten().OfType<SharpKml.Dom.LineString>().Any())
                 {
                     BUS bus = new BUS();
@@ -282,12 +307,27 @@ namespace Bus_Application
             }
             return done;
         }
-        private bool parsePoint(Placemark placemark, bool done)
+        private bool parsePoint(Placemark placemark, bool done, StreamWriter writetext)
         {
+            StringBuilder textString = new StringBuilder();
+
+            textString.Append("{");
+            if (rdbStations.Checked)
+            {
+                textString.Append("\"Station_Description\": \"" + placemark.Name + "\"," + Environment.NewLine);
+                textString.Append("\"Station_Coordinates\": \"");
+            }
+            else if (rdbReferences.Checked)
+            {
+                textString.Append("\"Known_As_Description\": \"" + placemark.Name + "\"," + Environment.NewLine);
+            }
+
             foreach (var point in placemark.Geometry.Flatten().OfType<SharpKml.Dom.Point>())
             {
                 DbGeography coordinates = DbGeography.PointFromText("POINT (" + point.Coordinate.Longitude
                 + " " + point.Coordinate.Latitude + ")", 4326);
+
+                textString.Append(point.Coordinate.Longitude + "," + point.Coordinate.Latitude + "\"");
 
                 if (rdbStations.Checked)
                 {
@@ -300,6 +340,11 @@ namespace Bus_Application
                     done = true;
                 }
             }
+
+            textString.Append("}, " + Environment.NewLine);
+
+            writetext.WriteLine(textString.ToString());
+
             return done;
         }
 
@@ -324,6 +369,7 @@ namespace Bus_Application
             knowAsLandmark.Known_As_Description = placemark.Name;
             landmark.Landmark_Coordinates = coordinates;
             knowAsLandmark.LANDMARK = landmark;
+            knowAsLandmark.Known_As_ID = count = count + 1;
 
             DBLandmarkKnownAs db = new DBLandmarkKnownAs(context);
             db.Add(knowAsLandmark);
@@ -338,6 +384,7 @@ namespace Bus_Application
 
                     knowAsLandmark.Known_As_Description = description[i];
                     landmark.Landmark_Coordinates = coordinates;
+                    knowAsLandmark.Known_As_ID = count = count + 1;
 
                     knowAsLandmark.LANDMARK = landmark;
 
@@ -349,6 +396,6 @@ namespace Bus_Application
 
         #endregion Add References or Stations
 
-        
+
     }
 }

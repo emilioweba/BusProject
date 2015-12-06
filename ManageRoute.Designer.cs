@@ -35,9 +35,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnAddBus = new System.Windows.Forms.Button();
             this.btnAddReferencia = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvRoutes = new System.Windows.Forms.DataGridView();
             this.testeOnibusDataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRoutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.testeOnibusDataSet1BindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,15 +95,15 @@
             this.btnAddReferencia.UseVisualStyleBackColor = true;
             this.btnAddReferencia.Click += new System.EventHandler(this.btnAddReferencia_Click);
             // 
-            // dataGridView1
+            // dgvRoutes
             // 
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.DataSource = this.testeOnibusDataSet1BindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(123, 181);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 8;
+            this.dgvRoutes.AutoGenerateColumns = false;
+            this.dgvRoutes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRoutes.DataSource = this.testeOnibusDataSet1BindingSource;
+            this.dgvRoutes.Location = new System.Drawing.Point(123, 181);
+            this.dgvRoutes.Name = "dgvRoutes";
+            this.dgvRoutes.Size = new System.Drawing.Size(240, 150);
+            this.dgvRoutes.TabIndex = 8;
             // 
             // testeOnibusDataSet1BindingSource
             // 
@@ -115,7 +115,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 366);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvRoutes);
             this.Controls.Add(this.btnAddReferencia);
             this.Controls.Add(this.btnAddBus);
             this.Controls.Add(this.label3);
@@ -129,7 +129,7 @@
             this.Text = "Manage Route";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManageRoute_FormClosed);
             this.Load += new System.EventHandler(this.ManageRoute_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRoutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.testeOnibusDataSet1BindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -144,7 +144,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnAddBus;
         private System.Windows.Forms.Button btnAddReferencia;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvRoutes;
         private System.Windows.Forms.BindingSource testeOnibusDataSet1BindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn busIDDataGridViewTextBoxColumn;
     }
